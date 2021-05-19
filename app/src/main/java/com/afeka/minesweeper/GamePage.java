@@ -32,8 +32,8 @@ public class GamePage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         boardSize = getBoardSize();
-        GameEngine.getInstance(boardSize.value,true).createGrid(this);
         super.onCreate(savedInstanceState);
+        GameEngine.getInstance(boardSize.value,true).createGrid(this);
         setContentView(R.layout.activity_game_page);
     }
 

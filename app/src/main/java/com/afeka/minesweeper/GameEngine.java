@@ -73,10 +73,15 @@ public class GameEngine {
 
     public void setPenalty(double penalty) {
         this.penalty = penalty;
+        Log.e(TAG, "setPenalty: " + penalty);
         int numOfBomb=(int) ((this.penalty + DEFAULT_PENALTY) * (this.boardSize * this.boardSize));
-        this.setNumberOfBombs(numOfBomb);
         if (MinesweeperGrid != null)
             this.updateGridPenalty();
+        if (getAvailableCells() > numOfBomb - this.getNumberOfBombs())
+            this.setNumberOfBombs(numOfBomb);
+        else
+            this.setGameStatus(GameStatus.LOSE);
+
     }
 
     public GameStatus getGameStatus() {
@@ -84,9 +89,10 @@ public class GameEngine {
     }
 
     public void setGameStatus(GameStatus gameStatus) {
-        if (this.gameStatus.equals(GameStatus.PLAY) && gameStatus.equals(GameStatus.PENALTY))
-            Log.i(TAG, "setGameStatus: play to penalty");
-            this.setPenalty((this.getPenalty() == 0) ? 0.1 : this.getPenalty()*2);
+        if (this.gameStatus.equals(GameStatus.PLAY) && gameStatus.equals(GameStatus.PENALTY)) {
+            Log.i(TAG, "setGameStatus: play to penalty" + gameStatus.toString());
+            this.setPenalty((this.getPenalty() == 0) ? 0.1 : this.getPenalty() * 2);
+        }
         this.gameStatus = gameStatus;
     }
 
@@ -106,6 +112,8 @@ public class GameEngine {
     }
 
     private void updateGridPenalty(){
+        Log.i(TAG, "updateGridPenalty: ");
+
         int[][] GeneratedGrid = Generator.regenerate(
                 this.getGrid(),
                 this.getNumberOfBombs(),
@@ -155,7 +163,7 @@ public class GameEngine {
                     if( getCellAt(x,y).isClicked() || getCellAt(x,y).isRevealed())
                         grid[x][y] = -2; // Clicked
                     else
-                        grid[x][y] = 0;
+                        grid[x][y] = 0; // Not Reveled
                 }
             }
         }
@@ -171,6 +179,17 @@ public class GameEngine {
 
     public Cell getCellAt( int x , int y ){
         return MinesweeperGrid[x][y];
+    }
+
+    public int getAvailableCells(){
+        int counter = 0;
+        if (this.MinesweeperGrid == null)
+            return this.getBoardSize() * this.getBoardSize();
+        for( int y = 0 ; y < this.getBoardSize() ; y++ )
+            for( int x = 0 ; x < this.getBoardSize() ; x++ )
+                if( !getCellAt(x,y).isRevealed()  )
+                    counter++;
+        return counter;
     }
 
     public void click( int x , int y ){
