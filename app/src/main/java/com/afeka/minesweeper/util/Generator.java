@@ -36,6 +36,7 @@ public class Generator {
         Random r = new Random();
 
         int currentBombs=0;
+        int available = 0;
         int x,y;
 //        int [][] grid = new int[width][height];
 //        for( int x = 0 ; x< width ;x++ ){
@@ -45,19 +46,22 @@ public class Generator {
             for (y = 0; y < height; y++) {
                 if (currentGrid[x][y] == -1)
                     currentBombs++;
-
-                while ((bombnumber - currentBombs) > 0) {
-                    x = r.nextInt(width);
-                    y = r.nextInt(height);
-
-                    if (currentGrid[x][y] == 0) {
-                        currentGrid[x][y] = -1;
-                        currentBombs++;
-                    }
-                }
-                currentGrid = calculateNeigbours(currentGrid, width, height);
+                else if (currentGrid[x][y] == 0)
+                    available++;
             }
         }
+
+        while ((bombnumber - currentBombs) > 0) {
+            x = r.nextInt(width);
+            y = r.nextInt(height);
+
+            if (currentGrid[x][y] == 0) {
+                currentGrid[x][y] = -1;
+                currentBombs++;
+            }
+        }
+        currentGrid = calculateNeigbours(currentGrid, width, height);
+
         return currentGrid;
     }
 
