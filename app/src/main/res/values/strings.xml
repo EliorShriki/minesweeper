@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Minesweeper</string>
+    <string name="choose_difficulty_level">Choose difficulty level</string>
+    <string name="board_size">Board size: </string>
+    <string name="beginner">Beginner</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="professional">Professional</string>
+    <string name="record_is">Record is: </string>
+    <string name="play_now">PLAY NOW</string>
+    <string name="your_score">Your score: </string>
+    <string name="play_again">PLAY AGAIN</string>
+    <string name="game_over">Game_over</string>
+    <string name="you_won">You won</string>
+    <string name="you_lose">You lose</string>
+    <string name="summary">Summary</string>
+    <string name="no_record">No record yet</string>
+</resources>
