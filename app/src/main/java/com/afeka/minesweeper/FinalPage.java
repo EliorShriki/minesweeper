@@ -34,20 +34,21 @@ public class FinalPage extends AppCompatActivity {
                 imageView.setImageResource(R.drawable.sad);
             }
         gameScore.setText(getString(R.string.your_score) + getExtraGameScore());
+        getSupportActionBar().hide();
     }
 
     private String getBoardSize() {
-//        Intent intent = getIntent();
-//        String gameStatus = intent.getStringExtra(GamePage.GAME_STATUS_KEY);
-//        return GameStatus.valueOf(gameStatus).toString();
-        return GameStatus.LOSE.name();
+        Intent intent = getIntent();
+        String gameStatus = intent.getStringExtra(GamePage.GAME_STATUS_KEY);
+        return GameStatus.valueOf(gameStatus).toString();
+//        return GameStatus.LOSE.name();
     }
 
     private String getExtraGameScore() {
-//        Intent intent = getIntent();
-//        String gameScore = intent.getStringExtra(GamePage.GAME_SCORE_KEY);
-//        return gameScore;
-        return "-1";
+        Intent intent = getIntent();
+        String gameScore = intent.getStringExtra(GamePage.GAME_SCORE_KEY);
+        return gameScore;
+//        return "-1";
     }
 
     public void onPlayAgainButtonClicked(View view) {
