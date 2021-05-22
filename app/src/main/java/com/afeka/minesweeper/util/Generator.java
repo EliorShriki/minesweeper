@@ -1,11 +1,15 @@
 package com.afeka.minesweeper.util;
 
+import android.util.Log;
+
 import com.afeka.minesweeper.views.grid.Cell;
 
 import java.util.Random;
 
 
 public class Generator {
+
+    static final String TAG = "Generator";
 
     public static int[][] generate( int bombnumber , final int width , final int height){
         // Random for generating numbers
@@ -34,6 +38,8 @@ public class Generator {
     public static int[][] regenerate( int[][] currentGrid, int bombnumber , final int width , final int height){
         // Random for generating numbers
         Random r = new Random();
+
+        Log.i(TAG, "regenerate: ");
 
         int currentBombs=0;
         int available = 0;
