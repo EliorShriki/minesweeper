@@ -14,17 +14,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-interface GravitySensorServiceListener {
-
-    enum ALARM_STATE {
-        ON,OFF
-    }
-
-    void alarmStateChanged(ALARM_STATE state);
-
-    void alarmSample(float xDiff,float yDiff,float zDiff);
-}
-
 public class GravitySensorService extends Service implements SensorEventListener {
     // This is a Tag for logging.
     private final static String TAG = "GravitySensorService";
@@ -37,23 +26,23 @@ public class GravitySensorService extends Service implements SensorEventListener
 
     // This is the (Binded) Services
     public class SensorServiceBinder extends Binder {
-        void registerListener(GravitySensorServiceListener listener) {
+        public void registerListener(GravitySensorServiceListener listener) {
             mListeners.add(listener);
         }
 
-        void unregisterListener(GravitySensorServiceListener listener) {
+        public void unregisterListener(GravitySensorServiceListener listener) {
             mListeners.remove(listener);
         }
 
-        void startSensors() {
+        public void startSensors() {
             mSensorManager.registerListener(GravitySensorService.this,mAccel, SensorManager.SENSOR_DELAY_NORMAL);
         }
 
-        void stopSensors() {
+        public void stopSensors() {
             mSensorManager.unregisterListener(GravitySensorService.this);
         }
 
-        void resetInitalLock() {
+        public void resetInitalLock() {
             isLocked = false;
         }
     }
