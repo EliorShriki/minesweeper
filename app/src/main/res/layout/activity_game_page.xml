@@ -5,15 +5,17 @@
     android:id="@+id/clo_main_game"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_bg"
     tools:context=".GamePage">
 
     <ImageView
         android:id="@+id/img_mineImage"
-        android:layout_width="330dp"
-        android:layout_height="110dp"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
+        android:background="@null"
         android:src="@drawable/red_mine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -13,7 +13,7 @@ public class GameEngine {
 
     static final String TAG = "GameEngine";
 
-    public static double DEFAULT_PENALTY = 0.15;
+    public static double DEFAULT_PENALTY = 0.05;
 
     private Context context;
 
@@ -75,13 +75,14 @@ public class GameEngine {
         this.penalty = penalty;
         Log.e(TAG, "setPenalty: " + penalty);
         int numOfBomb=(int) ((this.penalty + DEFAULT_PENALTY) * (this.boardSize * this.boardSize));
-        if (MinesweeperGrid != null)
-            this.updateGridPenalty();
+
         if (getAvailableCells() > numOfBomb - this.getNumberOfBombs())
             this.setNumberOfBombs(numOfBomb);
         else
             this.setGameStatus(GameStatus.LOSE);
 
+        if (MinesweeperGrid != null)
+            this.updateGridPenalty();
     }
 
     public GameStatus getGameStatus() {
@@ -90,10 +91,13 @@ public class GameEngine {
 
     public void setGameStatus(GameStatus gameStatus) {
         if (this.gameStatus.equals(GameStatus.PLAY) && gameStatus.equals(GameStatus.PENALTY)) {
+            this.gameStatus = gameStatus;
             Log.i(TAG, "setGameStatus: play to penalty" + gameStatus.toString());
-            this.setPenalty((this.getPenalty() == 0) ? 0.1 : this.getPenalty() * 2);
+            this.setPenalty((this.getPenalty() == 0) ? 0.01 : this.getPenalty() * 2);
+            this.checkEnd();
         }
-        this.gameStatus = gameStatus;
+        else
+            this.gameStatus = gameStatus;
     }
 
     public void createGrid(Context context){

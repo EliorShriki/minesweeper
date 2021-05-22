@@ -35,6 +35,7 @@ public class GamePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         GameEngine.getInstance(boardSize.value,true).createGrid(this);
         setContentView(R.layout.activity_game_page);
+        getSupportActionBar().hide();
     }
 
     @Override
@@ -60,8 +61,8 @@ public class GamePage extends AppCompatActivity {
         Intent intent = new Intent(GamePage.this, FinalPage.class);
 
         // TODO: Send Score and GameStatus.
-//        intent.putExtra(GamePage.GAME_STATUS_KEY,GameEngine.getInstance().getGameStatus().toString());
-//        intent.putExtra(GamePage.GAME_SCORE_KEY, Integer.toString(calculateScore(time)));
+        intent.putExtra(GamePage.GAME_STATUS_KEY,GameEngine.getInstance().getGameStatus().toString());
+        intent.putExtra(GamePage.GAME_SCORE_KEY, Integer.toString(calculateScore(time)));
 
         startActivity(intent);
     }
@@ -73,7 +74,7 @@ public class GamePage extends AppCompatActivity {
             if (GameEngine.getInstance().getGameStatus().equals(GameStatus.PENALTY))
                 ((ConstraintLayout) findViewById(R.id.clo_main_game)).setBackgroundColor(Color.RED);
             else
-                ((ConstraintLayout) findViewById(R.id.clo_main_game)).setBackgroundColor(Color.WHITE);
+                ((ConstraintLayout) findViewById(R.id.clo_main_game)).setBackgroundColor(getResources().getColor(R.color.app_bg));
         }
 
         if (GameEngine.getInstance().getGameStatus().equals(GameStatus.WIN) || GameEngine.getInstance().getGameStatus().equals(GameStatus.LOSE)) {
