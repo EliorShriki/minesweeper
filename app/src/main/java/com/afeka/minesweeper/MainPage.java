@@ -29,6 +29,8 @@ public class MainPage extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
         setBoardSize(boardSize);
         enableRButton();
+        getSupportActionBar().hide();
+
 //        getExtraRecord();
 //        getExtraGameScore();
     }
@@ -129,7 +131,10 @@ public class MainPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    public void onTopScoredButtonClicked(View view) {
+        Intent intent = new Intent(MainPage.this, ScorePage.class);
+        startActivity(intent);
+    }
 
 //    private String loadGameRecord() {
 //        SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);

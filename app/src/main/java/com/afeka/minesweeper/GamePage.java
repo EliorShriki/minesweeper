@@ -157,7 +157,9 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
     }
 
     private BoardSize getBoardSize() {
-        return BoardSize.PROFESSIONAL;
+        Intent intent = getIntent();
+        String currentBoardSize = intent.getStringExtra(MainPage.BOARD_SIZE_KEY);
+        return BoardSize.valueOf(currentBoardSize);
     }
 
 
@@ -213,7 +215,6 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
                     double penalty = (double) (penaltyTime*0.01);
                     GameEngine.getInstance().setPenalty(penalty);
                 }
-//                    penaltyTime++;
                 else
                     penaltyTime=0;
                 updateScore();
@@ -243,13 +244,6 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
             return 0;
         int score = (int) ((1/Math.log(time+1))*10000);
 
-        // Remove
-//        if (score > 4000 && score < 4100)
-//            runOnUiThread(new Runnable() {
-//                public void run() {
-//                    GameEngine.getInstance().setGameStatus(GameStatus.PENALTY);
-//                }
-//            });
         return (int) ((1/Math.log(time+1))*10000);
     }
 

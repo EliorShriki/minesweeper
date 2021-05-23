@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_bg"
     tools:context=".MainPage">
 
     <ImageView
@@ -65,8 +66,8 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="50dp"
-            android:text="@string/beginner"
-            android:onClick="onRadioButtonClicked" />
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/beginner" />
 
         <RadioButton
             android:id="@+id/rbtn_intermediate"
@@ -75,8 +76,8 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="50dp"
-            android:text="@string/intermediate"
-            android:onClick="onRadioButtonClicked" />
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/intermediate" />
 
         <RadioButton
             android:id="@+id/rbtn_professional"
@@ -108,11 +109,11 @@
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
+        android:onClick="onPlayButtonClicked"
         android:text="@string/play_now"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:onClick="onPlayButtonClicked" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_record"
@@ -122,8 +123,25 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
         android:text="@string/record_is"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_boardSize" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="50dp"
+        android:onClick="onTopScoredButtonClicked"
+        android:text="Top score"
+        app:icon="@android:drawable/btn_star_big_on"
+        app:layout_constraintBottom_toTopOf="@+id/btn_playNow"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_boardSize" />
 

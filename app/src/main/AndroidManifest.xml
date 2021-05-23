@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:testOnly="false"
         android:theme="@style/Theme.Minesweeper">
-        <activity android:name=".FinalPage"></activity>
+        <activity android:name=".ScorePage"></activity>
+        <activity android:name=".FinalPage" />
         <activity android:name=".GamePage" />
         <activity android:name=".MainPage">
             <intent-filter>
@@ -19,11 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".services.GravitySensorService"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true"></service>
     </application>
 
 </manifest>
