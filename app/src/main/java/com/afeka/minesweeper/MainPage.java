@@ -29,6 +29,8 @@ public class MainPage extends AppCompatActivity {
         setContentView(R.layout.activity_main_page);
         setBoardSize(boardSize);
         enableRButton();
+        getSupportActionBar().hide();
+
 //        getExtraRecord();
 //        getExtraGameScore();
     }
