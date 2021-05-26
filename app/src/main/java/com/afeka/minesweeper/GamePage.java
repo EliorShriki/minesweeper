@@ -23,6 +23,8 @@ import com.afeka.minesweeper.services.GravitySensorServiceListener;
 import com.afeka.minesweeper.util.BoardSize;
 import com.afeka.minesweeper.util.GameStatus;
 
+import java.io.IOException;
+
 public class GamePage extends AppCompatActivity implements GravitySensorServiceListener {
 
     static final String TAG = "GamePage";
@@ -76,6 +78,8 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
             mBinder.resetInitalLock();
             mBinder.startSensors();
         }
+
+        loadGamestateFromFile();
     }
 
     @Override
@@ -172,10 +176,10 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
         startActivity(intent);
     }
 
-    public void updateScore(){
+    public Integer updateScore(){
+        Integer score = calculateScore(time);
         if (GameEngine.getInstance().getGameStatus().equals(GameStatus.PLAY) || GameEngine.getInstance().getGameStatus().equals(GameStatus.PENALTY)) {
-            timerText.setText("Score: " + calculateScore(time));
-
+            timerText.setText("Score: " + score);
             if (GameEngine.getInstance().getGameStatus().equals(GameStatus.PENALTY))
                 clo_main_game.setBackgroundColor(Color.RED);
             else
@@ -191,8 +195,10 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
             else
             if (GameEngine.getInstance().getGameStatus().equals(GameStatus.LOSE))
                 tv_gameStatus.setText(getString(R.string.you_lose));
-            timerText.setText("Score: " + Integer.toString(calculateScore(time)));
+            timerText.setText("Score: " + Integer.toString(score));
         }
+
+        return score;
     }
 
 
@@ -205,8 +211,9 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
         time = 0;
         timerText.setText("0");
 
-        timerRunnable = () -> {
 
+        timerRunnable = () -> {
+            Integer score;
             if (GameEngine.getInstance().getGameStatus().equals(GameStatus.PLAY) || GameEngine.getInstance().getGameStatus().equals(GameStatus.PENALTY)) {
                 time++;
                 handler.postDelayed(timerRunnable, 1000);
@@ -217,12 +224,13 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
                 }
                 else
                     penaltyTime=0;
-                updateScore();
+                score = updateScore();
             }
 
             if (GameEngine.getInstance().getGameStatus().equals(GameStatus.WIN) || GameEngine.getInstance().getGameStatus().equals(GameStatus.LOSE)) {
                 stopTimer();
-                updateScore();
+                score = updateScore();
+                saveGameState(score);
             }
         };
 
@@ -266,4 +274,60 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
     private void stopTimer() {
         handler.removeCallbacks(timerRunnable);
     }
+
+    private void saveGameState(Integer score) {
+
+        try {
+            saveGamestateToFile(score);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+
+        Board b = game.getBoard();
+        for(int i =0; i< b.getBoardSize(); i++) {
+            // Tile0 : X
+            // Tile1 :
+            // Tile2 : O
+            editor.putString("Tile" + i, b.getTile(i).getStateString());
+        }
+
+        editor.commit();*/
+
+    }
+
+    private void saveGamestateToFile(int score) throws IOException {
+
+        FileHelper fh = new FileHelper();
+        String filePath = getFilesDir().getPath() + "/GameState/";
+        String fileName = "gs.txt";
+        fh.saveBoardJSONToFile(score, filePath, fileName);
+
+    }
+
+    // Open file
+    // read file line by line
+    // parse line
+    // close the file
+
+    // create file? or open existing
+    // write lines to file in a certain format
+    // close the file
+
+
+
+    private void loadGamestateFromFile() {
+        FileHelper fh = new FileHelper();
+        String filePath = getFilesDir().getPath() + "/GameState/";
+        String fileName = "gs.txt";
+        Integer score = fh.readGameFromFile(filePath, fileName);
+
+        if (score != null) {
+            Log.i(TAG, "loadGamestateFromFile: " + score);
+        }
+
+    }
 }
+
