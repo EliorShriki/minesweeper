@@ -3,17 +3,21 @@ package com.afeka.minesweeper;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.afeka.minesweeper.util.BoardSize;
-import com.afeka.minesweeper.util.FileHelper;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainPage extends AppCompatActivity {
 
@@ -89,11 +93,13 @@ public class MainPage extends AppCompatActivity {
 //                saveScore(record);
 //    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateRecordView(){
         TextView recordView = findViewById(R.id.tv_record);
         // TODO: Load record
         int record = -1;
-        recordView.setText(getString(R.string.record_is) + record);
+
+        recordView.setText(getString(R.string.record_is) +  loadGamestateFromFile().toString());
     }
 
     public void updateBoardView(){
@@ -171,5 +177,24 @@ public class MainPage extends AppCompatActivity {
 //        String s= pref.getString(BOARD_SIZE_KEY, BoardSize.BEGINNER.toString());
 //        return s;
 //    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private ArrayList<Integer> loadGamestateFromFile() {
+        com.afeka.minesweeper.FileHelper fh = new com.afeka.minesweeper.FileHelper();
+        String filePath = getFilesDir().getPath() + FileHelper.SCORE_FILE_PREFIX + this.boardSize.toString()+ "/";
+        String fileName = "scores.txt";
+        ScoreHelper scores = fh.readGameFromFile(filePath, fileName);
+
+        if (scores != null) {
+//            IntStream.range(0, scores.getScores().size())
+//                    .forEach(i -> Log.i(TAG,"Score "+i+" has a "+ scores.getScores().get(i)));
+            ArrayList<Integer> list = scores.getScores();
+//            ArrayList<Integer> sortedList = scores.getScores().stream().sorted((i1, i2) -> i1.compareTo(i2)).collect(Collectors.toList());
+//                    .forEach(i -> Log.i(TAG,"Score "+i+" has a "+ list.get(i)));
+            Log.i(TAG,"Score "+list.toString());
+            return list;
+        }
+        return new ArrayList<Integer>();
+    }
 }
 

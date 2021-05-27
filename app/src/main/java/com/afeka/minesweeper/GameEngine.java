@@ -73,7 +73,7 @@ public class GameEngine {
 
     public void setPenalty(double penalty) {
         this.penalty = penalty;
-        Log.e(TAG, "setPenalty: " + penalty);
+        Log.i(TAG, "setPenalty: " + penalty);
         int numOfBomb=(int) ((this.penalty + DEFAULT_PENALTY) * (this.boardSize * this.boardSize));
 
         if (getAvailableCells() > numOfBomb - this.getNumberOfBombs())

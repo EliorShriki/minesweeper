@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -24,6 +26,10 @@ import com.afeka.minesweeper.util.BoardSize;
 import com.afeka.minesweeper.util.GameStatus;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GamePage extends AppCompatActivity implements GravitySensorServiceListener {
 
@@ -67,6 +73,7 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
         btn_toSummary = (Button) findViewById(R.id.btn_toSummary);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onResume() {
 //        GameEngine.getInstance(boardSize.value,true).createGrid(this);
@@ -301,8 +308,9 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
     private void saveGamestateToFile(int score) throws IOException {
 
         FileHelper fh = new FileHelper();
-        String filePath = getFilesDir().getPath() + "/GameState/";
-        String fileName = "gs.txt";
+        Log.i(TAG, "saveGamestateToFile: " + this.getBoardSize().toString());
+        String filePath = getFilesDir().getPath() + FileHelper.SCORE_FILE_PREFIX + this.getBoardSize().toString()+ "/";
+        String fileName = "scores.txt";
         fh.saveBoardJSONToFile(score, filePath, fileName);
 
     }
@@ -318,14 +326,20 @@ public class GamePage extends AppCompatActivity implements GravitySensorServiceL
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void loadGamestateFromFile() {
         FileHelper fh = new FileHelper();
-        String filePath = getFilesDir().getPath() + "/GameState/";
-        String fileName = "gs.txt";
-        Integer score = fh.readGameFromFile(filePath, fileName);
+        String filePath = getFilesDir().getPath() + FileHelper.SCORE_FILE_PREFIX + this.getBoardSize().toString()+ "/";
+        String fileName = "scores.txt";
+        ScoreHelper scores = fh.readGameFromFile(filePath, fileName);
 
-        if (score != null) {
-            Log.i(TAG, "loadGamestateFromFile: " + score);
+        if (scores != null) {
+//            IntStream.range(0, scores.getScores().size())
+//                    .forEach(i -> Log.i(TAG,"Score "+i+" has a "+ scores.getScores().get(i)));
+            ArrayList<Integer> list = scores.getScores();
+//            ArrayList<Integer> sortedList = scores.getScores().stream().sorted((i1, i2) -> i1.compareTo(i2)).collect(Collectors.toList());
+//                    .forEach(i -> Log.i(TAG,"Score "+i+" has a "+ list.get(i)));
+            Log.i(TAG,"Score "+list.toString());
         }
 
     }

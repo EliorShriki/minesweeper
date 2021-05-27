@@ -7,15 +7,20 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 
 public class FileHelper {
+    public static final String SCORE_FILE_PREFIX = "/Score";
 
     public void saveBoardJSONToFile(int game, String filePath, String fileName) throws IOException {
-
+        ScoreHelper scores = readGameFromFile(filePath,fileName);
+        if ( scores == null )
+            scores = new ScoreHelper();
+        scores.addScore(game);
         Gson gson = new Gson();
         createPathIfNeeded(filePath);
         FileWriter fw = new FileWriter(filePath + "\\" + fileName);
-        gson.toJson(game, fw);
+        gson.toJson(scores, fw);
         fw.flush(); //flush data to file   <---
         fw.close(); //close write
 
@@ -30,7 +35,7 @@ public class FileHelper {
 
     }
 
-    public Integer readGameFromFile(String filePath, String fileName) {
+    public ScoreHelper readGameFromFile(String filePath, String fileName) {
 
         try {
             // create Gson instance
@@ -40,7 +45,7 @@ public class FileHelper {
             Reader jsonReader = new FileReader(filePath + "\\" + fileName);
 
             // convert JSON string to Game object
-            int game = gson.fromJson(jsonReader,Integer.class);
+            ScoreHelper game = gson.fromJson(jsonReader,ScoreHelper.class);
 
             // close reader
             jsonReader.close();
@@ -49,7 +54,7 @@ public class FileHelper {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            return null;
+            return new ScoreHelper();
         }
     }
 }
