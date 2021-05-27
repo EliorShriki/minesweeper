@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:testOnly="false"
         android:theme="@style/Theme.Minesweeper">
-        <activity android:name=".ScorePage"></activity>
         <activity android:name=".FinalPage" />
         <activity android:name=".GamePage" />
         <activity android:name=".MainPage">

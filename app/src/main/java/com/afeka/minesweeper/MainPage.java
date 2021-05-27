@@ -155,11 +155,6 @@ public class MainPage extends AppCompatActivity implements ScoreFragment.ScoreFr
         startActivity(intent);
     }
 
-    public void onTopScoredButtonClicked(View view) {
-        Intent intent = new Intent(MainPage.this, ScorePage.class);
-        startActivity(intent);
-    }
-
 //    private String loadGameRecord() {
 //        SharedPreferences pref = getPreferences(Context.MODE_PRIVATE);
 //        int record = pref.getInt(boardSize.toString(), -1);
