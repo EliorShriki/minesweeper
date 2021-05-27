@@ -17,6 +17,7 @@ import com.afeka.minesweeper.util.BoardSize;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainPage extends AppCompatActivity {
@@ -99,7 +100,7 @@ public class MainPage extends AppCompatActivity {
         // TODO: Load record
         int record = -1;
 
-        recordView.setText(getString(R.string.record_is) +  loadGamestateFromFile().toString());
+        recordView.setText(getString(R.string.record_is) +  loadGameRecordFromFile().toString());
     }
 
     public void updateBoardView(){
@@ -179,22 +180,20 @@ public class MainPage extends AppCompatActivity {
 //    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private ArrayList<Integer> loadGamestateFromFile() {
+    private Integer loadGameRecordFromFile() {
         com.afeka.minesweeper.FileHelper fh = new com.afeka.minesweeper.FileHelper();
         String filePath = getFilesDir().getPath() + FileHelper.SCORE_FILE_PREFIX + this.boardSize.toString()+ "/";
         String fileName = "scores.txt";
         ScoreHelper scores = fh.readGameFromFile(filePath, fileName);
 
         if (scores != null) {
-//            IntStream.range(0, scores.getScores().size())
-//                    .forEach(i -> Log.i(TAG,"Score "+i+" has a "+ scores.getScores().get(i)));
+
             ArrayList<Integer> list = scores.getScores();
-//            ArrayList<Integer> sortedList = scores.getScores().stream().sorted((i1, i2) -> i1.compareTo(i2)).collect(Collectors.toList());
-//                    .forEach(i -> Log.i(TAG,"Score "+i+" has a "+ list.get(i)));
+
             Log.i(TAG,"Score "+list.toString());
-            return list;
+            return list.get(0);
         }
-        return new ArrayList<Integer>();
+        return -1;
     }
 }
 

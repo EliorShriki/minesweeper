@@ -15,7 +15,8 @@ public class ScoreHelper {
     private ArrayList<Integer> scores;
 
     public ScoreHelper(){
-        scores = new ArrayList<Integer>();
+        this.scores = new ArrayList<Integer>();
+        this.scores.add(-1);
     }
 
     public ScoreHelper(ArrayList scores){
@@ -24,7 +25,7 @@ public class ScoreHelper {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList<Integer> getScores() {
-        return (ArrayList<Integer>) scores.stream().sorted((i1, i2) -> i1.compareTo(i2)).collect(Collectors.toList());
+        return (ArrayList<Integer>) scores.stream().sorted((i1, i2) -> i2.compareTo(i1)).collect(Collectors.toList());
     }
 
     public void addScore(Integer score) {
