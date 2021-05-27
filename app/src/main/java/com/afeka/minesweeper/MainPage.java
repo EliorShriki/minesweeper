@@ -20,14 +20,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainPage extends AppCompatActivity {
+public class MainPage extends AppCompatActivity implements ScoreFragment.ScoreFragmentListener {
 
     static final String TAG = "MainPage";
     static final String BOARD_SIZE_KEY = "BOARD_SIZE";
     static final String GAME_RECORD_KEY = "RECORD";
 
     BoardSize boardSize = BoardSize.BEGINNER;
+    ScoreFragment fragment;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +39,17 @@ public class MainPage extends AppCompatActivity {
         enableRButton();
         getSupportActionBar().hide();
 
+        fragment = ScoreFragment.newInstance(getFilesDir().getPath(),this.boardSize.toString());
+
+        //fragment.setListener(this);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment, TAG).commit();
+
 //        getExtraRecord();
 //        getExtraGameScore();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onResume() {
         super.onResume();
@@ -49,6 +59,7 @@ public class MainPage extends AppCompatActivity {
 //        getExtraGameScore();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void initRadioButton(RadioButton radioBtn){
         radioBtn.setChecked(true);
         updateBoardView();
@@ -57,9 +68,12 @@ public class MainPage extends AppCompatActivity {
 
     public void setBoardSize(BoardSize bSize){
         boardSize = bSize;
+        if (fragment != null )
+            fragment.setBoardSize(bSize.toString());
 //        saveBoardSize();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void enableRButton(){
         RadioButton radioBtn;
         if (boardSize.equals(BoardSize.BEGINNER))
@@ -108,6 +122,7 @@ public class MainPage extends AppCompatActivity {
         boardView.setText(getString(R.string.board_size) + boardSize.value + "X" + boardSize.value);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
@@ -130,6 +145,8 @@ public class MainPage extends AppCompatActivity {
 
         updateBoardView();
         updateRecordView();
+//        fragment.startTapped(fragment.button);
+        fragment.updateScores();
     }
 
     public void onPlayButtonClicked(View view) {
@@ -180,7 +197,7 @@ public class MainPage extends AppCompatActivity {
 //    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private Integer loadGameRecordFromFile() {
+    public Integer loadGameRecordFromFile() {
         com.afeka.minesweeper.FileHelper fh = new com.afeka.minesweeper.FileHelper();
         String filePath = getFilesDir().getPath() + FileHelper.SCORE_FILE_PREFIX + this.boardSize.toString()+ "/";
         String fileName = "scores.txt";
@@ -194,6 +211,16 @@ public class MainPage extends AppCompatActivity {
             return list.get(0);
         }
         return -1;
+    }
+
+    @Override
+    public void startTapped() {
+        Log.d(TAG, "startTapped");
+    }
+
+    @Override
+    public void stopTapped() {
+        Log.d(TAG, "stopTapped");
     }
 }
 
